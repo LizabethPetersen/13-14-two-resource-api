@@ -6,9 +6,9 @@ import Model from '../model/models';
 const modelsRoute = new Router();
 
 modelsRoute.post('/api/models', (request, response, next) => {
-  logger.log(logger.INFO, 'Moto-Router POST to /api/kawasaki-motos - processing a request');
+  logger.log(logger.INFO, 'Motorcycle Route POST to /api/kawasaki-motos - processing a request');
   if (!request.body.name) {
-    logger.log(logger.INFO, 'Moto-Router POST /api/kawasaki-motos: Responding with 400 error for no included name');
+    logger.log(logger.INFO, 'Motorcycle Route POST /api/kawasaki-motos: Responding with 400 error for no included name');
     const error = new Error('No name provided');
     error.status = 400;
     return next(error);
@@ -19,9 +19,9 @@ modelsRoute.post('/api/models', (request, response, next) => {
       logger.log(logger.INFO, `Model Route: POST before Save: ${JSON.stringify(request.body)}`);
       return new Model(request.body).save();
     })
-    .then((newStudent) => {
-      logger.log(logger.INFO, `Model Route: POST after Save: ${JSON.stringify(newStudent)}`);
-      response.json(newStudent);
+    .then((newModel) => {
+      logger.log(logger.INFO, `Model Route: POST after Save: ${JSON.stringify(newModel)}`);
+      response.json(newModel);
     })
     .catch(next);
   return undefined;

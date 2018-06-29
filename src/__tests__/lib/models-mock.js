@@ -1,23 +1,22 @@
 'use strict';
 
 import faker from 'faker';
-import Models from '../../model/models';
-import mockMotoPromise from './moto-mock';
+import Model from '../../model/models';
+import mockMotoResource from './moto-mock';
 
 export default () => {
   const mockData = {};
-  return mockMotoPromise()
-    .then((newMoto) => {
-      mockData.moto = newMoto;
+  return mockMotoResource()
+    .then((newMotorcyclercycle) => {
+      mockData.motorcycle = newMotorcyclercycle;
     })
     .then(() => {
       const mockModel = {
         name: faker.lorem.words(2),
         cc: faker.random.number(4),
-        engine: faker.lorem.words(3),
         styleId: mockData.style._id,
       };
-      return new Models(mockModel).save();
+      return new Model(mockModel).save();
     })
     .then((newModel) => {
       mockData.model = newModel;

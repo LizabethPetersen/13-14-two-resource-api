@@ -1,29 +1,30 @@
 'use strict';
 
-import faker from 'faker';
 import superagent from 'superagent';
-import Motorcycle from '../model/motorcycle';
+import faker from 'faker';
 import { startServer, stopServer } from '../lib/server';
+import Motorcycle from '../model/motorcycle';
+import createMockMotoPromise from './lib/moto-mock';
 
 const apiUrl = `http://localhost:${process.env.PORT}/api/kawasaki-motos`;
 
-const createMockMotoPromise = () => {
-  return new Motorcycle({
-    style: faker.lorem.words(2),
-    year: faker.random.number(4),
-  }).save();
-};
+// const createMockMotoPromise = () => {
+//   return new Motorcycle({
+//     style: faker.lorem.words(2),
+//     year: faker.random.number(4),
+//   }).save();
+// };
 
 beforeAll(startServer);
 afterAll(stopServer);
 
-// afterEach(() => Moto.remove({}));
+afterEach(() => Motorcycle.remove({}));
 
-describe('Tests POST requests to /api/kawasaki-motos', () => {
-  test('Send 200 for successful build of motorcycle object', () => {
+describe('POST to /api/kawasaki-motos', () => {
+  test.only('Send 200 for successful build of motorcycle object', () => { /* eslint-disable-line*/
     const mockMotoToPost = {
       style: faker.lorem.words(2),
-      year: faker.random.number(4),
+      year: 2018,
     };
     return superagent.post(apiUrl)
       .send(mockMotoToPost)
@@ -41,7 +42,7 @@ describe('Tests POST requests to /api/kawasaki-motos', () => {
 
   test('Send 400 for not including a required style property', () => {
     const mockMotoToPost = {
-      year: faker.random.number(4),
+      year: 2018,
     };
     return superagent.post(apiUrl)
       .send(mockMotoToPost)
@@ -55,9 +56,9 @@ describe('Tests POST requests to /api/kawasaki-motos', () => {
 
   test('POST 409 for duplicate key', () => {
     return createMockMotoPromise()
-      .then((newMoto) => {
+      .then((newMotorcyclercycle) => {
         return superagent.post(apiUrl)
-          .send({ style: newMoto.style })
+          .send({ style: newMotorcyclercycle.style })
           .then((response) => {
             throw response;
           })
@@ -75,8 +76,8 @@ describe('Tests GET requests to api/kawasaki-motos', () => {
   test('Send 200 for a successful GET of a motorcycle object', () => {
     let mockMotoForGet;
     return createMockMotoPromise()
-      .then((newMoto) => {
-        mockMotoForGet = newMoto;
+      .then((newMotorcycle) => {
+        mockMotoForGet = newMotorcycle;
         return superagent.get(`${apiUrl}/${mockMotoForGet._id}`);
       })
       .then((response) => {
@@ -102,14 +103,14 @@ describe('Tests GET requests to api/kawasaki-motos', () => {
 describe('Tests PUT requests to api/kawasaki-motos', () => {
   test('Send 200 for successful updating of a motorcycle', () => {
     return createMockMotoPromise()
-      .then((newMoto) => {
-        return superagent.put(`${apiUrl}/${newMoto._id}`)
+      .then((updatedMotorcycle) => {
+        return superagent.put(`${apiUrl}/${updatedMotorcycle._id}`)
           .send({ style: 'updated style', year: 'updated year' })
           .then((response) => {
             expect(response.status).toEqual(200);
             expect(response.body.style).toEqual('updated style');
             expect(response.body.year).toEqual('updated year');
-            expect(response.body._id.toString()).toEqual(newMoto._id.toString());
+            expect(response.body._id.toString()).toEqual(updatedMotorcycle._id.toString());
           })
           .catch((err) => {
             throw err;

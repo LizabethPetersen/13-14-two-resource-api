@@ -7,7 +7,7 @@ const motorcycleSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  models: [
+  model: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'models',
@@ -16,7 +16,6 @@ const motorcycleSchema = mongoose.Schema({
   year: {
     type: Number,
     default: 2018,
-    enum: [2017, 2018, 2019],
   },
 }, { timestamps: true });
 
