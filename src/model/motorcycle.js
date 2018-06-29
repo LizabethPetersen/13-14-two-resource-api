@@ -25,4 +25,4 @@ motorcycleSchema.pre('findOne', function preHookCallback(done) {
 });
 
 const skipInit = process.env.NODE_ENV === 'development';
-export default mongoose.model('motorcycle', motorcycleSchema, 'motorcycle', skipInit);
+export default mongoose.model('motorcycles', motorcycleSchema, 'motorcycles', skipInit);

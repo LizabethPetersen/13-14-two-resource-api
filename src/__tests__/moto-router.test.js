@@ -4,9 +4,9 @@ import superagent from 'superagent';
 import faker from 'faker';
 import { startServer, stopServer } from '../lib/server';
 import Motorcycle from '../model/motorcycle';
-import createMockMotoPromise from './lib/moto-mock';
+import createMockMotoResource from './lib/moto-mock';
 
-const apiUrl = `http://localhost:${process.env.PORT}/api/kawasaki-motos`;
+const apiUrl = `http://localhost:${process.env.PORT}/api/kawasakis`;
 
 // const createMockMotoPromise = () => {
 //   return new Motorcycle({
@@ -20,7 +20,7 @@ afterAll(stopServer);
 
 afterEach(() => Motorcycle.remove({}));
 
-describe('POST to /api/kawasaki-motos', () => {
+describe('POST to /api/kawasakis', () => {
   test.only('Send 200 for successful build of motorcycle object', () => { /* eslint-disable-line*/
     const mockMotoToPost = {
       style: faker.lorem.words(2),
@@ -55,7 +55,7 @@ describe('POST to /api/kawasaki-motos', () => {
   });
 
   test('POST 409 for duplicate key', () => {
-    return createMockMotoPromise()
+    return createMockMotoResource()
       .then((newMotorcyclercycle) => {
         return superagent.post(apiUrl)
           .send({ style: newMotorcyclercycle.style })
@@ -72,10 +72,10 @@ describe('POST to /api/kawasaki-motos', () => {
   });
 });
 
-describe('Tests GET requests to api/kawasaki-motos', () => {
+describe('Tests GET requests to api/kawasakis', () => {
   test('Send 200 for a successful GET of a motorcycle object', () => {
     let mockMotoForGet;
-    return createMockMotoPromise()
+    return createMockMotoResource()
       .then((newMotorcycle) => {
         mockMotoForGet = newMotorcycle;
         return superagent.get(`${apiUrl}/${mockMotoForGet._id}`);
@@ -100,9 +100,9 @@ describe('Tests GET requests to api/kawasaki-motos', () => {
   });
 });
 
-describe('Tests PUT requests to api/kawasaki-motos', () => {
+describe('Tests PUT requests to api/kawasakis', () => {
   test('Send 200 for successful updating of a motorcycle', () => {
-    return createMockMotoPromise()
+    return createMockMotoResource()
       .then((updatedMotorcycle) => {
         return superagent.put(`${apiUrl}/${updatedMotorcycle._id}`)
           .send({ style: 'updated style', year: 'updated year' })
@@ -122,10 +122,10 @@ describe('Tests PUT requests to api/kawasaki-motos', () => {
   });
 });
 
-describe('Tests DELETE requests to api/kawasaki-motos', () => {
+describe('Tests DELETE requests to api/kawasakis', () => {
   test('Sends 204 for successful deletion of one object', () => {
     let mockMotoForDelete;
-    return createMockMotoPromise()
+    return createMockMotoResource()
       .then((testMoto) => {
         mockMotoForDelete = testMoto;
         return superagent.delete(`${apiUrl}/${mockMotoForDelete._id}`);

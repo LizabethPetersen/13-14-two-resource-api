@@ -22,7 +22,7 @@ const modelSchema = mongoose.Schema({
   styleId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'motorcycle',
+    ref: 'motorcycles',
   },
 }, { timestamps: true });
 

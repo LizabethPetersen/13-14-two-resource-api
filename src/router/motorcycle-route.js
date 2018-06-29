@@ -6,10 +6,10 @@ import Motorcycle from '../model/motorcycle';
 
 const motorcycleRoute = new Router();
 
-motorcycleRoute.post('/api/kawasaki-motos', (request, response, next) => {
-  logger.log(logger.INFO, 'Motorcycle Route POST to /api/kawasaki-motos - processing a request');
+motorcycleRoute.post('/api/kawasakis', (request, response, next) => {
+  logger.log(logger.INFO, 'Motorcycle Route POST to /api/kawasakis - processing a request');
   if (!request.body.style) {
-    logger.log(logger.INFO, 'Motorcycle Route POST /api/kawasaki-motos: Responding with 400 error for no included style');
+    logger.log(logger.INFO, 'Motorcycle Route POST /api/kawasakis: Responding with 400 error for no included style');
     const error = new Error('No style provided');
     error.status = 400;
     return next(error);
@@ -27,10 +27,10 @@ motorcycleRoute.post('/api/kawasaki-motos', (request, response, next) => {
   return undefined;
 });
 
-motorcycleRoute.get('/api/kawasaki-motos/:id?', (request, response, next) => {
-  logger.log(logger.INFO, 'Motorcycle Route GET /api/kawasaki-motos/:id = Processing a request');
+motorcycleRoute.get('/api/kawasakis/:id?', (request, response, next) => {
+  logger.log(logger.INFO, 'Motorcycle Route GET /api/kawasakis/:id = Processing a request');
   if (!request.params.id) {
-    logger.log(logger.INFO, 'Motorcycle Route GET /api/kawasaki-motos: Responding with a 404 error code for no objects found');
+    logger.log(logger.INFO, 'Motorcycle Route GET /api/kawasakis: Responding with a 404 error code for no objects found');
     return response(404, {});
   }
   return Motorcycle.findOne({ _id: request.params.id })
@@ -45,9 +45,9 @@ motorcycleRoute.get('/api/kawasaki-motos/:id?', (request, response, next) => {
     .catch(next);
 });
 
-motorcycleRoute.put('/api/kawasaki-motos/:id?', (request, response, next) => {
+motorcycleRoute.put('/api/kawasakis/:id?', (request, response, next) => {
   if (!request.params.id) {
-    logger.log(logger.INFO, 'PUT /api/kawasaki-motos: Responding with a 400 error code for no id passed in');
+    logger.log(logger.INFO, 'PUT /api/kawasakis: Responding with a 400 error code for no id passed in');
     return response.sendStatus(400);
   }
 
@@ -68,10 +68,10 @@ motorcycleRoute.put('/api/kawasaki-motos/:id?', (request, response, next) => {
   return undefined;
 });
 
-motorcycleRoute.delete('/api/kawasaki-motos/:id?', (request, response, next) => {
-  logger.log(logger.INFO, 'Motorcycle Route DELETE /api/kawasaki-motos/:id = Processing a request');
+motorcycleRoute.delete('/api/kawasakis/:id?', (request, response, next) => {
+  logger.log(logger.INFO, 'Motorcycle Route DELETE /api/kawasakis/:id = Processing a request');
   if (!request.params.id) {
-    logger.log(logger.INFO, 'Motorcycle Route DELETE /api/kawasaki-motos: Responding with 400 error code for no objects found');
+    logger.log(logger.INFO, 'Motorcycle Route DELETE /api/kawasakis: Responding with 400 error code for no objects found');
     return response.sendStatus(400);
   }
   return Motorcycle.findByIdAndRemove(request.params.id)
