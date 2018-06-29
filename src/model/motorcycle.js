@@ -8,21 +8,21 @@ const motorcycleSchema = mongoose.Schema({
     required: true,
   },
   models: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'models',
-      },
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'models',
+    },
   ],
   year: {
-      type: Number,
-      default: 2018,
-      enum: [2017, 2018, 2019],
-  }
+    type: Number,
+    default: 2018,
+    enum: [2017, 2018, 2019],
+  },
 }, { timestamps: true });
 
 motorcycleSchema.pre('findOne', function preHookCallback(done) {
-    this.populate('models');
-    done();
+  this.populate('models');
+  done();
 });
 
 const skipInit = process.env.NODE_ENV === 'development';

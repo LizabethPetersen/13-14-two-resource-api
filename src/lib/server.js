@@ -2,8 +2,10 @@
 
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import logger from './logger';
-import motoRouter from '../router/moto-builder-route';
+import motorcycleRoute from '../router/motorcycle-route';
+import modelsRoute from '../router/models-route';
 
 import loggerMiddleware from './middleware/logger-middleware';
 import errorMiddleware from './middleware/error-middleware';
@@ -12,9 +14,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 let server = null;
 
-app.use(loggerMiddleware);
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.use(motoRouter);
+app.use(loggerMiddleware);
+app.use(motorcycleRoute);
+app.use(modelsRoute);
 
 app.use(errorMiddleware);
 

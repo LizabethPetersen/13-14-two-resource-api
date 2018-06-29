@@ -2,7 +2,7 @@
 
 import faker from 'faker';
 import superagent from 'superagent';
-import Motorcycle from '../model/moto-builder';
+import Motorcycle from '../model/motorcycle';
 import { startServer, stopServer } from '../lib/server';
 
 const apiUrl = `http://localhost:${process.env.PORT}/api/kawasaki-motos`;

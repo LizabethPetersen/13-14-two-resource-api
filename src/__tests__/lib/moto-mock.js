@@ -1,7 +1,7 @@
 'use strict';
 
 import faker from 'faker';
-import Motorcycle from '../../model/moto-builder';
+import Motorcycle from '../../model/motorcycle';
 
 export default () => {
   const mockMotoToPost = {

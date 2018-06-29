@@ -3,9 +3,10 @@
 import superagent from 'superagent';
 import faker from 'faker';
 import { startServer, stopServer } from '../lib/server';
-import Motorcycle from '../model/moto-builder';
+import Motorcycle from '../model/motorcycle';
 import Models from '../model/models';
 import createMockDataPromise from './lib/models-mock';
+import motoMock from './lib/moto-mock';
 
 const apiUrl = `http://localhost:${process.env.PORT}/api/models`;
 
@@ -44,7 +45,7 @@ describe('POST /api/models', () => {
     const mockDataToPost = {
       cc: faker.random.number(3),
       engine: faker.lorem.words(3),
-      styleId: mockData.style._id,
+      styleId: motoMock.style._id,
     };
     return superagent.post(apiUrl)
       .send(mockDataToPost)
@@ -101,15 +102,15 @@ describe('GET /api/stats', () => {
 describe('Tests PUT requests to api/models', () => {
   test('Send 200 for successful updating of a model', () => {
     return createMockDataPromise()
-      .then((newModel) => {
-        return superagent.put(`${apiUrl}/${newModel._id}`)
+      .then((updatedModel) => {
+        return superagent.put(`${apiUrl}/${updatedModel._id}`)
           .send({ name: 'updated name', cc: 'updated cc', engine: 'updated engine' })
           .then((response) => {
             expect(response.status).toEqual(200);
             expect(response.body.name).toEqual('updated name');
             expect(response.body.cc).toEqual('updated cc');
             expect(response.body.engine).toEqual('updated engine');
-            expect(response.body._id.toString()).toEqual(newModel._id.toString());
+            expect(response.body._id.toString()).toEqual(updatedModel._id.toString());
           })
           .catch((err) => {
             throw err;
