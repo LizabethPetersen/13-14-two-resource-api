@@ -41,7 +41,7 @@ describe('Tests POST requests to /api/kawasaki-motos', () => {
 
   test('Send 400 for not including a required style property', () => {
     const mockMotoToPost = {
-        year: faker.random.number(4),
+      year: faker.random.number(4),
     };
     return superagent.post(apiUrl)
       .send(mockMotoToPost)
@@ -124,7 +124,7 @@ describe('Tests PUT requests to api/kawasaki-motos', () => {
 describe('Tests DELETE requests to api/kawasaki-motos', () => {
   test('Sends 204 for successful deletion of one object', () => {
     let mockMotoForDelete;
-    return createMockTypefacePromise()
+    return createMockMotoPromise()
       .then((testMoto) => {
         mockMotoForDelete = testMoto;
         return superagent.delete(`${apiUrl}/${mockMotoForDelete._id}`);

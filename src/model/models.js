@@ -18,8 +18,8 @@ const modelsSchema = mongoose.Schema({
     required: true,
   },
   transmission: {
-      type: String,
-      required: true,
+    stype: String,
+    required: true,
   },
   styleId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -32,24 +32,24 @@ const skipInit = process.env.NODE_ENV === 'development';
 export default mongoose.model('models', modelsSchema, 'models', skipInit);
 
 function modelsPreHook(done) {
-    return Motorcycle.findById(this.styleId)
-      .then((foundMotorcycle) => {
-        foundMotorcycle.models.push(this._id);
-        return foundMotorcycle.save();
-      })
-      .then(() => done())
-      .catch(done);
-  }
+  return Motorcycle.findById(this.styleId)
+    .then((foundMotorcycle) => {
+      foundMotorcycle.models.push(this._id);
+      return foundMotorcycle.save();
+    })
+    .then(() => done())
+    .catch(done);
+}
   
-  const modelsPostHook = (document, done) => {
-    return Motorcycle.findById(document.styleId)
-      .then((foundMotorcycle) => {
-        foundMotorcycle.models = foundMotorcycles.models.filter(model => model._id.toString() !== document._id.toString());
-        return foundMotorcycle.save();
-      })
-      .then(() => done())
-      .catch(done);
-  };
+const modelsPostHook = (document, done) => {
+  return Motorcycle.findById(document.styleId)
+    .then((foundMotorcycle) => {
+      foundMotorcycle.models = foundMotorcycle.models.filter(model => model._id.toString() !== document._id.toString());
+      return foundMotorcycle.save();
+    })
+    .then(() => done())
+    .catch(done);
+};
   
-  modelsSchema.pre('save', modelsPreHook);
-  modelsSchema.post('remove', modelsPostHook);
+modelsSchema.pre('save', modelsPreHook);
+modelsSchema.post('remove', modelsPostHook);
