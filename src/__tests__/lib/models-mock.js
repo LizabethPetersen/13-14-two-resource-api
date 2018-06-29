@@ -1,8 +1,8 @@
 'use strict';
 
 import faker from 'faker';
-import Stats from '../../model/stats';
-import mockMotoPromise from './moto-builder-mock';
+import Models from '../../model/models';
+import mockMotoPromise from './moto-mock';
 
 export default () => {
     const mockData = {};
@@ -11,14 +11,15 @@ export default () => {
         mockData.moto = newMoto;
     })
     .then(() => {
-        const mockStats = {
+        const mockModels = {
+            name: faker.lorem.words(2),
             cc: faker.random.number(4),
             engine: faker.lorem.words(3),
         };
-        return new Stats(mockStats).save();
+        return new Models(mockModels).save();
     })
-    .then((newStats) => {
-        mockData.stats = newStats;
+    .then((newModels) => {
+        mockData.models = newModels;
         return mockData;
     })
     .catch((err) => {

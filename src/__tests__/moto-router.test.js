@@ -2,15 +2,15 @@
 
 import faker from 'faker';
 import superagent from 'superagent';
-import Motorcycle from '../model/motoBuilder';
+import Motorcycle from '../model/moto-builder';
 import { startServer, stopServer } from '../lib/server';
 
 const apiUrl = `http://localhost:${process.env.PORT}/api/kawasaki-motos`;
 
 const createMockMotoPromise = () => {
   return new Motorcycle({
-    model: faker.lorem.words(2),
-    style: faker.lorem.words(5),
+    style: faker.lorem.words(2),
+    year: faker.random.number(4),
   }).save();
 };
 
@@ -20,17 +20,17 @@ afterAll(stopServer);
 // afterEach(() => Moto.remove({}));
 
 describe('Tests POST requests to /api/kawasaki-motos', () => {
-  test('Send 200 for successful build of typeface object', () => {
+  test('Send 200 for successful build of motorcycle object', () => {
     const mockMotoToPost = {
-      model: faker.lorem.words(2),
-      style: faker.lorem.words(5),
+      style: faker.lorem.words(2),
+      year: faker.random.number(4),
     };
     return superagent.post(apiUrl)
       .send(mockMotoToPost)
       .then((response) => {
         expect(response.status).toEqual(200);
-        expect(response.body.make).toEqual(mockMotoToPost.model);
-        expect(response.body.model).toEqual(mockMotoToPost.style);
+        expect(response.body.style).toEqual(mockMotoToPost.style);
+        expect(response.body.year).toEqual(mockMotoToPost.year);
         expect(response.body._id).toBeTruthy();
         expect(response.body.createdOn).toBeTruthy();
       })
@@ -39,9 +39,9 @@ describe('Tests POST requests to /api/kawasaki-motos', () => {
       });
   });
 
-  test('Send 400 for not including a required model property', () => {
+  test('Send 400 for not including a required style property', () => {
     const mockMotoToPost = {
-        style: faker.lorem.words(5),
+        year: faker.random.number(4),
     };
     return superagent.post(apiUrl)
       .send(mockMotoToPost)
@@ -57,7 +57,7 @@ describe('Tests POST requests to /api/kawasaki-motos', () => {
     return createMockMotoPromise()
       .then((newMoto) => {
         return superagent.post(apiUrl)
-          .send({ name: newMoto.name })
+          .send({ style: newMoto.style })
           .then((response) => {
             throw response;
           })
@@ -72,17 +72,17 @@ describe('Tests POST requests to /api/kawasaki-motos', () => {
 });
 
 describe('Tests GET requests to api/kawasaki-motos', () => {
-  test('Send 200 for a successful GET of a typeface object', () => {
+  test('Send 200 for a successful GET of a motorcycle object', () => {
     let mockMotoForGet;
     return createMockMotoPromise()
-      .then((testMoto) => {
-        mockMotoForGet = testMoto;
+      .then((newMoto) => {
+        mockMotoForGet = newMoto;
         return superagent.get(`${apiUrl}/${mockMotoForGet._id}`);
       })
       .then((response) => {
         expect(response.status).toEqual(200);
-        expect(response.body.model).toEqual(mockMotoForGet.model);
         expect(response.body.style).toEqual(mockMotoForGet.style);
+        expect(response.body.year).toEqual(mockMotoForGet.year);
       })
       .catch((err) => {
         throw err;
@@ -104,11 +104,11 @@ describe('Tests PUT requests to api/kawasaki-motos', () => {
     return createMockMotoPromise()
       .then((newMoto) => {
         return superagent.put(`${apiUrl}/${newMoto._id}`)
-          .send({ model: 'updated model', model: 'updated style' })
+          .send({ style: 'updated style', year: 'updated year' })
           .then((response) => {
             expect(response.status).toEqual(200);
-            expect(response.body.model).toEqual('updated model');
             expect(response.body.style).toEqual('updated style');
+            expect(response.body.year).toEqual('updated year');
             expect(response.body._id.toString()).toEqual(newMoto._id.toString());
           })
           .catch((err) => {
