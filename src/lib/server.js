@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import logger from './logger';
 import motorcycleRoute from '../router/motorcycle-route';
-import modelsRoute from '../router/models-route';
+import specsRoute from '../router/specs-route';
 
 import loggerMiddleware from './middleware/logger-middleware';
 import errorMiddleware from './middleware/error-middleware';
@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.use(loggerMiddleware);
 app.use(motorcycleRoute);
-app.use(modelsRoute);
+app.use(specsRoute);
 
 app.use(errorMiddleware);
 
@@ -33,7 +33,7 @@ const startServer = () => {
   return mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
       server = app.listen(PORT, () => {
-        console.log(`Server is listening on port ${PORT}`);
+        console.log(`Server is listening on port ${PORT}`); /* eslint-disable-line */
       });
     })
     .catch((err) => {

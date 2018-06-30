@@ -4,11 +4,10 @@ import superagent from 'superagent';
 import faker from 'faker';
 import { startServer, stopServer } from '../lib/server';
 import Motorcycle from '../model/motorcycle';
-import Model from '../model/version';
-import createMockDataPromise from './lib/version-mock';
-import motoMock from './lib/moto-mock';
+import Specs from '../model/specs';
+import createMockDataPromise from './lib/mock-specs';
 
-const apiUrl = `http://localhost:${process.env.PORT}/api/models`;
+const apiUrl = `http://localhost:${process.env.PORT}/api/specs`;
 
 beforeAll(startServer);
 afterAll(stopServer);
@@ -16,23 +15,26 @@ afterAll(stopServer);
 afterEach(() => {
   Promise.all([
     Motorcycle.remove({}),
-    Model.remove({}),
+    Specs.remove({}),
   ]);
 });
 
-describe('POST /api/version', () => {
-  test('Send 200 for successful posting of a version', () => {
+describe('POST /api/specs', () => {
+  test('Send 200 for successful posting of specs', () => {
     return createMockDataPromise()
-      .then((motorcycle) => {
-        const mockModel = {
-          name: faker.lorem.word(1),
-          cc: faker.random.number(3),
-          styleId: motorcycle._id,
+      .then((mockData) => {
+        const mockSpecs = {
+          style: faker.lorem.words(2),
+          cc: faker.random.number(1),
+          motorcycleId: mockData.motorcycle._id,
         };
         return superagent.post(apiUrl)
-          .send(mockModel)
+          .send(mockSpecs)
           .then((response) => {
             expect(response.status).toEqual(200);
+            expect(response.body.style).toEqual(mockSpecs.style);
+            expect(response.body.cc).toEqual(mockSpecs.cc);
+            expect(response.body._id).toBeTruthy();
           })
           .catch((err) => {
             throw err;
@@ -40,11 +42,9 @@ describe('POST /api/version', () => {
       });
   });
 
-  test('Send 400 for not including a required name property', () => {
+  test('Send 400 for no required style property', () => {
     const mockDataToPost = {
-      cc: faker.random.number(3),
-      engine: faker.lorem.words(3),
-      styleId: motoMock.style._id,
+      cc: faker.random.number(1),
     };
     return superagent.post(apiUrl)
       .send(mockDataToPost)
@@ -60,7 +60,7 @@ describe('POST /api/version', () => {
     return createMockDataPromise()
       .then((mockData) => {
         return superagent.post(apiUrl)
-          .send({ name: mockData.name })
+          .send({ style: mockData.style })
           .then((response) => {
             throw response;
           })
@@ -74,19 +74,21 @@ describe('POST /api/version', () => {
   });
 });
 
-// describe('GET /api/stats', () => {
-// test('Send 200 GET for successful fetching of models', () => {
-// return createMockDataPromise()
-// .then((mockData) => {
-// return superagent.get(`${apiUrl}/${motorcycle._id}`);
-// })
-// .then((response) => {
-// expect(response.status).toEqual(200);
-// })
-// .catch((err) => {
-// throw err;
-// });
-// });
+describe('GET /api/specs/:id?', () => {
+  test('Send 200 GET for successful fetching of specs', () => {
+    return createMockDataPromise()
+      .then((mockData) => {
+        return superagent.get(`${apiUrl}/${mockData.specs._id}`);
+      })
+      .then((response) => {
+        expect(response.status).toEqual(200);
+      })
+      .catch((err) => {
+        throw err;
+      });
+  });
+});
+
 // test('Send 404 GET: no model with this id', () => {
 // return superagent.get(`${apiUrl}/THISISABADID`)
 // .then((response) => {
@@ -120,7 +122,7 @@ describe('POST /api/version', () => {
 // });
 // });
     
-describe('Tests DELETE requests to api/models', () => {
+describe('Tests DELETE requests to api/specs/:id?', () => {
   test('Sends 204 for successful deletion of one object', () => {
     let mockModelForDelete;
     return createMockDataPromise()

@@ -3,23 +3,24 @@
 import mongoose from 'mongoose';
 import Motorcycle from './motorcycle';
 
-const modelSchema = mongoose.Schema({
-  name: {
+const specsSchema = mongoose.Schema({
+  style: {
     type: String,
+    enum: ['supersport', 'sport', 'standard', 'touring', 'dual-sport', 'cruiser', 'off-road'],
     required: true,
     unique: true,
   },
   cc: {
-    type: String,
+    type: Number,
     required: true,
   },
   engine: {
     type: String,
   },
   transmission: {
-    stype: String,
+    type: String,
   },
-  styleId: {
+  motorcycleId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'motorcycle',
@@ -27,28 +28,27 @@ const modelSchema = mongoose.Schema({
 }, { timestamps: true });
 
 const skipInit = process.env.NODE_ENV === 'development';
-export default mongoose.model('version', modelSchema, 'version', skipInit);
+export default mongoose.model('specs', specsSchema, 'specs', skipInit);
 
-function versionPreHook(done) {
+function specsPreHook(done) {
   return Motorcycle.findById(this.styleId)
     .then((foundMotorcycle) => {
-      console.log(foundMotorcycle, 'thisdg;kalhfgaldk;gjadfgl;k');
-      foundMotorcycle.version.push(this._id);
+      foundMotorcycle.specs.push(this._id);
       return foundMotorcycle.save();
     })
     .then(() => done())
     .catch(done);
 }
   
-const versionPostHook = (document, done) => {
+const specsPostHook = (document, done) => {
   return Motorcycle.findById(document.styleId)
     .then((foundMotorcycle) => {
-      foundMotorcycle.version = foundMotorcycle.version.filter(version => version._id.toString() !== document._id.toString());
+      foundMotorcycle.specs = foundMotorcycle.specs.filter(specs => specs._id.toString() !== document._id.toString());
       return foundMotorcycle.save();
     })
     .then(() => done())
     .catch(done);
 };
   
-modelSchema.pre('save', versionPreHook);
-modelSchema.post('remove', versionPostHook);
+specsSchema.pre('save', specsPreHook);
+specsSchema.post('remove', specsPostHook);

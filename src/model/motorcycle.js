@@ -3,15 +3,15 @@
 import mongoose from 'mongoose';
 
 const motorcycleSchema = mongoose.Schema({
-  style: {
+  name: {
     type: String,
     required: true,
     unique: true,
   },
-  version: [
+  specs: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'version',
+      ref: 'specs',
     },
   ],
   year: {
@@ -20,7 +20,7 @@ const motorcycleSchema = mongoose.Schema({
 }, { timestamps: true });
 
 motorcycleSchema.pre('findOne', function preHookCallback(done) {
-  this.populate('version');
+  this.populate('specs');
   done();
 });
 
