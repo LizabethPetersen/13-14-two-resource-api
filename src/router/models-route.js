@@ -1,52 +1,52 @@
 import { Router } from 'express';
 import HttpErrors from 'http-errors';
 import logger from '../lib/logger';
-import Model from '../model/models';
+import Version from '../model/version';
 
-const modelsRoute = new Router();
+const versionRoute = new Router();
 
-modelsRoute.post('/api/models', (request, response, next) => {
-  logger.log(logger.INFO, 'Motorcycle Route POST to /api/kawasakis - processing a request');
+versionRoute.post('/api/version', (request, response, next) => {
+  logger.log(logger.INFO, 'V-Route POST to /api/version - processing a request');
   if (!request.body.name) {
-    logger.log(logger.INFO, 'Motorcycle Route POST /api/kawasakis: Responding with 400 error for no included name');
+    logger.log(logger.INFO, 'V-Route POST /api/version: Responding with 400 error for no included name');
     const error = new Error('No name provided');
     error.status = 400;
     return next(error);
   }
 
-  Model.init()
+  Version.init()
     .then(() => {
-      logger.log(logger.INFO, `Model Route: POST before Save: ${JSON.stringify(request.body)}`);
-      return new Model(request.body).save();
+      logger.log(logger.INFO, `V-Route POST before Save: ${JSON.stringify(request.body)}`);
+      return new Version(request.body).save();
     })
-    .then((newModel) => {
-      logger.log(logger.INFO, `Model Route: POST after Save: ${JSON.stringify(newModel)}`);
-      response.json(newModel);
+    .then((newVersion) => {
+      logger.log(logger.INFO, `V-Route POST after Save: ${JSON.stringify(newVersion)}`);
+      response.json(newVersion);
     })
     .catch(next);
   return undefined;
 });
 
-modelsRoute.get('/api/models/:id?', (request, response, next) => {
+versionRoute.get('/api/version/:id?', (request, response, next) => {
   if (!request.params.id) {
     return next(new HttpErrors(400, 'Did not enter an ID'));
   }
 
-  Model.init()
+  Version.init()
     .then(() => {
-      return Model.findOne({ _id: request.params.id });
+      return Version.findOne({ _id: request.params.id });
     })
-    .then((foundModel) => {
-      logger.log(logger.INFO, `Model Route: After GET Model ${JSON.stringify(foundModel)}`);
-      return response.json(foundModel);
+    .then((foundVersion) => {
+      logger.log(logger.INFO, `V-Route: After GET Model ${JSON.stringify(foundVersion)}`);
+      return response.json(foundVersion);
     })
     .catch(next);
   return undefined;
 });
 
-modelsRoute.put('/api/models/:id?', (request, response, next) => {
+versionRoute.put('/api/version/:id?', (request, response, next) => {
   if (!request.params.id) {
-    logger.log(logger.INFO, 'PUT /api/models: Responding with a 400 error code for no id passed in');
+    logger.log(logger.INFO, 'V-Route PUT /api/version: Responding with a 400 error code for no id passed in');
     return response.sendStatus(400);
   }
   
@@ -55,34 +55,34 @@ modelsRoute.put('/api/models/:id?', (request, response, next) => {
     runValidators: true,
   };
   
-  Model.init()
+  Version.init()
     .then(() => {
-      return Model.findByIdAndUpdate(request.params.id, request.body, options);
+      return Version.findByIdAndUpdate(request.params.id, request.body, options);
     })
-    .then((updatedModel) => {
-      logger.log(logger.INFO, `PUT: Responding with a 200 status code for successfully updated model: ${JSON.stringify(updatedModel)}`);
-      return response.json(updatedModel);
+    .then((updatedVersion) => {
+      logger.log(logger.INFO, `V-Route PUT: Responding with a 200 status code for successfully updated model: ${JSON.stringify(updatedVersion)}`);
+      return response.json(updatedVersion);
     })
     .catch(next);
   return undefined;
 });
   
-modelsRoute.delete('/api/models/:id?', (request, response, next) => {
-  logger.log(logger.INFO, 'Model Route DELETE /api/models/:id = Processing a request');
+versionRoute.delete('/api/version/:id?', (request, response, next) => {
+  logger.log(logger.INFO, 'V-Route DELETE /api/version/:id = Processing a request');
   if (!request.params.id) {
-    logger.log(logger.INFO, 'Model Route DELETE /api/models: Responding with 400 error code for no objects found');
+    logger.log(logger.INFO, 'V-Route DELETE /api/version: Responding with 400 error code for no objects found');
     return response.sendStatus(400);
   }
-  return Model.findByIdAndRemove(request.params.id)
-    .then((model) => {
-      if (!model) {
-        logger.log(logger.INFO, 'DELETE: Responding with 404 status code for no model found');
+  return Version.findByIdAndRemove(request.params.id)
+    .then((version) => {
+      if (!version) {
+        logger.log(logger.INFO, 'V-Route DELETE: Responding with 404 status code for no version found');
         return response.sendStatus(404);
       }
-      logger.log(logger.INFO, 'DELETE: Responding with 204 status code for successful delete');
+      logger.log(logger.INFO, 'V-Route DELETE: Responding with 204 status code for successful delete');
       return response.sendStatus(204);
     })
     .catch(next);
 });
 
-export default modelsRoute;
+export default versionRoute;

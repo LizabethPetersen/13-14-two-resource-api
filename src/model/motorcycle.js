@@ -6,23 +6,23 @@ const motorcycleSchema = mongoose.Schema({
   style: {
     type: String,
     required: true,
+    unique: true,
   },
-  model: [
+  version: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'models',
+      ref: 'version',
     },
   ],
   year: {
     type: Number,
-    default: 2018,
   },
 }, { timestamps: true });
 
 motorcycleSchema.pre('findOne', function preHookCallback(done) {
-  this.populate('models');
+  this.populate('version');
   done();
 });
 
 const skipInit = process.env.NODE_ENV === 'development';
-export default mongoose.model('motorcycles', motorcycleSchema, 'motorcycles', skipInit);
+export default mongoose.model('motorcycle', motorcycleSchema, 'motorcycle', skipInit);

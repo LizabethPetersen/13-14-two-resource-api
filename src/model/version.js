@@ -22,32 +22,33 @@ const modelSchema = mongoose.Schema({
   styleId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'motorcycles',
+    ref: 'motorcycle',
   },
 }, { timestamps: true });
 
 const skipInit = process.env.NODE_ENV === 'development';
-export default mongoose.model('models', modelSchema, 'models', skipInit);
+export default mongoose.model('version', modelSchema, 'version', skipInit);
 
-function modelPreHook(done) {
+function versionPreHook(done) {
   return Motorcycle.findById(this.styleId)
     .then((foundMotorcycle) => {
-      foundMotorcycle.models.push(this._id);
+      console.log(foundMotorcycle, 'thisdg;kalhfgaldk;gjadfgl;k');
+      foundMotorcycle.version.push(this._id);
       return foundMotorcycle.save();
     })
     .then(() => done())
     .catch(done);
 }
   
-const modelPostHook = (document, done) => {
+const versionPostHook = (document, done) => {
   return Motorcycle.findById(document.styleId)
     .then((foundMotorcycle) => {
-      foundMotorcycle.models = foundMotorcycle.models.filter(model => model._id.toString() !== document._id.toString());
+      foundMotorcycle.version = foundMotorcycle.version.filter(version => version._id.toString() !== document._id.toString());
       return foundMotorcycle.save();
     })
     .then(() => done())
     .catch(done);
 };
   
-modelSchema.pre('save', modelPreHook);
-modelSchema.post('remove', modelPostHook);
+modelSchema.pre('save', versionPreHook);
+modelSchema.post('remove', versionPostHook);

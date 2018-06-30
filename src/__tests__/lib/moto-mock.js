@@ -3,6 +3,7 @@
 import faker from 'faker';
 import Motorcycle from '../../model/motorcycle';
 
+// check naming conventions on this: why mockMotoResource? Isn't this the promise?
 export default () => {
   const mockMotoResource = {
     style: faker.lorem.words(2),
