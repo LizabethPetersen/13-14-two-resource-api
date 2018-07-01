@@ -44,45 +44,45 @@ specsRoute.get('/api/specs/:id?', (request, response, next) => {
   return undefined;
 });
 
-specsRoute.put('/api/specs/:id?', (request, response, next) => {
-  if (!request.params.id) {
-    logger.log(logger.INFO, 'S-Route PUT /api/specs: Responding with a 400 error code for no id passed in');
-    return response.sendStatus(400);
-  }
-  
-  const options = {
-    new: true,
-    runValidators: true,
-  };
-  
-  Specs.init()
-    .then(() => {
-      return Specs.findByIdAndUpdate(request.params.id, request.body, options);
-    })
-    .then((updatedSpecs) => {
-      logger.log(logger.INFO, `S-Route PUT: 200 status code for successfully updated specs: ${JSON.stringify(updatedSpecs)}`);
-      return response.json(updatedSpecs);
-    })
-    .catch(next);
-  return undefined;
-});
-  
-specsRoute.delete('/api/specs/:id?', (request, response, next) => {
-  logger.log(logger.INFO, 'S-Route DELETE /api/specs/:id = Processing a request');
-  if (!request.params.id) {
-    logger.log(logger.INFO, 'S-Route DELETE /api/specs: Responding with 400 error code for no objects found');
-    return response.sendStatus(400);
-  }
-  return Specs.findByIdAndRemove(request.params.id)
-    .then((specs) => {
-      if (!specs) {
-        logger.log(logger.INFO, 'S-Route DELETE: Responding with 404 status code for no specs found');
-        return response.sendStatus(404);
-      }
-      logger.log(logger.INFO, 'S-Route DELETE: Responding with 204 status code for successful delete');
-      return response.sendStatus(204);
-    })
-    .catch(next);
-});
+// specsRoute.put('/api/specs/:id?', (request, response, next) => {
+// if (!request.params.id) {
+// logger.log(logger.INFO, 'S-Route PUT /api/specs: Responding with a 400 error code for no id passed in');
+// return response.sendStatus(400);
+// }
+// 
+// const options = {
+// new: true,
+// runValidators: true,
+// };
+// 
+// Specs.init()
+// .then(() => {
+// return Specs.findByIdAndUpdate(request.params.id, request.body, options);
+// })
+// .then((updatedSpecs) => {
+// logger.log(logger.INFO, `S-Route PUT: 200 status code for successfully updated specs: ${JSON.stringify(updatedSpecs)}`);
+// return response.json(updatedSpecs);
+// })
+// .catch(next);
+// return undefined;
+// });
+// 
+// specsRoute.delete('/api/specs/:id?', (request, response, next) => {
+// logger.log(logger.INFO, 'S-Route DELETE /api/specs/:id = Processing a request');
+// if (!request.params.id) {
+// logger.log(logger.INFO, 'S-Route DELETE /api/specs: Responding with 400 error code for no objects found');
+// return response.sendStatus(400);
+// }
+// return Specs.findByIdAndRemove(request.params.id)
+// .then((specs) => {
+// if (!specs) {
+// logger.log(logger.INFO, 'S-Route DELETE: Responding with 404 status code for no specs found');
+// return response.sendStatus(404);
+// }
+// logger.log(logger.INFO, 'S-Route DELETE: Responding with 204 status code for successful delete');
+// return response.sendStatus(204);
+// })
+// .catch(next);
+// });
 
 export default specsRoute;

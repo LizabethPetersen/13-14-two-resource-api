@@ -1,8 +1,8 @@
 'use strict';
 
+import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
-import cors from 'cors';
 import logger from './logger';
 import motorcycleRoute from '../router/motorcycle-route';
 import specsRoute from '../router/specs-route';
@@ -18,10 +18,10 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(loggerMiddleware);
 app.use(motorcycleRoute);
 app.use(specsRoute);
 
+app.use(loggerMiddleware);
 app.use(errorMiddleware);
 
 app.all('*', (request, response) => {
