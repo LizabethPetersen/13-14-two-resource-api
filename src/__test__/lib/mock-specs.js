@@ -2,28 +2,19 @@
 
 import faker from 'faker';
 import Specs from '../../model/specs';
-import createMockMotoPromise from './mock-moto';
+import mockMotoResource from './mock-moto';
 
 export default () => {
   const mockData = {};
-  return createMockMotoPromise()
+  return mockMotoResource()
     .then((newMotorcycle) => {
       mockData.motorcycle = newMotorcycle;
-      /*
-      mockData =
-        {
-          motorcycle: {
-            _id: 13089-35985-9 (unique number assigned by mongoose),
-            name: some random faker words;
-          }
-        }
-      */
     })
     .then(() => {
       const mockSpecs = {
         style: faker.lorem.words(2),
         cc: faker.random.number(1),
-        motorcycleId: mockData.motorcycle._id,
+        motorcycleId: mockData._id,
       };
       return new Specs(mockSpecs).save();
     })

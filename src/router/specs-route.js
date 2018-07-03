@@ -7,8 +7,8 @@ const specsRoute = new Router();
 
 specsRoute.post('/api/specs', (request, response, next) => {
   logger.log(logger.INFO, 'S-Route POST to /api/specs - processing a request');
-  if (!request.body.name) {
-    logger.log(logger.INFO, 'S-Route POST /api/specs: Responding with 400 error for no included name');
+  if (!request.body.style) {
+    logger.log(logger.INFO, 'S-Route POST /api/specs: Responding with 400 error for no included style');
     const error = new Error('No style provided');
     error.status = 400;
     return next(error);

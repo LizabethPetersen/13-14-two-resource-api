@@ -8,15 +8,18 @@ const motorcycleSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
+
+  year: {
+    type: String,
+    required: true,
+  },
+
   specs: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'specs',
     },
   ],
-  year: {
-    type: Number,
-  },
 }, { timestamps: true });
 
 motorcycleSchema.pre('findOne', function preHookCallback(done) {

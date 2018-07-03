@@ -8,24 +8,16 @@ import Motorcycle from '../model/motorcycle';
 const motorcycleRoute = new Router();
 
 motorcycleRoute.post('/api/kawasakis', (request, response, next) => {
-  logger.log(logger.INFO, 'M-Route POST to /api/kawasakis - processing a request');
-  if (!request.body.style) {
-    logger.log(logger.INFO, 'M-Route POST to /api/kawasakis: Responding with 400 error for no included style');
-    const error = new Error('No style provided');
-    error.status = 400;
-    return next(error);
-  }
-
   Motorcycle.init()
     .then(() => {
+      logger.log(logger.INFO, `MOTO ROUTER BEFORE SAVE: Saved a new motorcycle ${JSON.stringify(request.body)}`);
       return new Motorcycle(request.body).save();
     })
     .then((newMotorcycle) => {
-      logger.log(logger.INFO, `M-Route POST: A new motorcycle was built: ${JSON.stringify(newMotorcycle)}`);
+      logger.log(logger.INFO, `MOTO ROUTER AFTER SAVE: Saved a new motorcycle ${JSON.stringify(newMotorcycle)}`);
       return response.json(newMotorcycle);
     })
     .catch(next);
-  return undefined;
 });
 
 motorcycleRoute.get('/api/kawasakis/:id?', (request, response, next) => {

@@ -2,7 +2,7 @@
 
 import logger from '../logger';
 
-export default (error, request, response, next) => {
+export default (error, request, response, next) => { /* eslint-disable-line */
   logger.log(logger.ERROR, `ERROR Middleware ${JSON.stringify(error)}`);
 
   if (error.status) {
@@ -28,6 +28,5 @@ export default (error, request, response, next) => {
     return response.sendStatus(401);
   }
   logger.log(logger.ERROR, `Responding with a 500 status code ${JSON.stringify(error)}`);
-  next();
   return response.sendStatus(500);
 };

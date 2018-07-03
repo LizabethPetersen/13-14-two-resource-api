@@ -18,10 +18,10 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use(loggerMiddleware);
 app.use(motorcycleRoute);
 app.use(specsRoute);
 
-app.use(loggerMiddleware);
 app.use(errorMiddleware);
 
 app.all('*', (request, response) => {

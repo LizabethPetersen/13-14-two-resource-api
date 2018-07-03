@@ -6,9 +6,8 @@ import Motorcycle from './motorcycle';
 const specsSchema = mongoose.Schema({
   style: {
     type: String,
-    // enum: ['supersport', 'sport', 'standard', 'touring', 'dual-sport', 'cruiser', 'off-road'],
+    // enum: ['H2', Supersport', 'Sport', 'Standard', 'Touring', 'Dual-sport', 'Cruiser', 'Off-road'],
     required: true,
-    unique: true,
   },
   cc: {
     type: Number,
@@ -39,7 +38,7 @@ function specsPreHook(done) {
     .then(() => done())
     .catch(done);
 }
-  
+
 const specsPostHook = (document, done) => {
   return Motorcycle.findById(document.motorcycleId)
     .then((foundMotorcycle) => {
@@ -49,6 +48,6 @@ const specsPostHook = (document, done) => {
     .then(() => done())
     .catch(done);
 };
-  
+
 specsSchema.pre('save', specsPreHook);
 specsSchema.post('remove', specsPostHook);
