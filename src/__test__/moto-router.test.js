@@ -31,36 +31,35 @@ describe('POST /api/kawasakis', () => {
         throw err;
       });
   });
-});
 
-// test('Send 400 for no included name property', () => {
-// return superagent.post(apiUrl)
-// .send(mockMoto)
-// .then((response) => {
-// throw response;
-// })
-// .catch((err) => {
-// expect(err.status).toEqual(400);
-// });
-// });
-// 
-// test('POST 409 for duplicate key', () => {
-// return mockMotoResource()
-// .then((newMotorcycle) => {
-// return superagent.post(apiUrl)
-// .send({ style: newMotorcycle.style })
-// .then((response) => {
-// throw response;
-// })
-// .catch((err) => {
-// expect(err.status).toEqual(409);
-// });
-// })
-// .catch((err) => {
-// throw err;
-// });
-// });
-// });
+  test('Send 400 for no included name property', () => {
+    return superagent.post(apiUrl)
+      .send(mockMoto)
+      .then((response) => {
+        throw response;
+      })
+      .catch((err) => {
+        expect(err.status).toEqual(400);
+      });
+  });
+
+  test('POST 409 for duplicate key', () => {
+    return mockMotoResource()
+      .then((newMotorcycle) => {
+        return superagent.post(apiUrl)
+          .send({ name: newMotorcycle.name })
+          .then((response) => {
+            throw response;
+          })
+          .catch((err) => {
+            expect(err.status).toEqual(409);
+          });
+      })
+      .catch((err) => {
+        throw err;
+      });
+  });
+});
 
 describe('GET api/kawasakis/:id?', () => {
   test('Send 200 for successful retrieval of a motorcycle', () => {
@@ -80,15 +79,15 @@ describe('GET api/kawasakis/:id?', () => {
       });
   });
 
-  // test('Send 400 GET: no motorcycle with this id', () => {
-  // return superagent.get(`${apiUrl}/THISISABADID`)
-  // .then((response) => {
-  // throw response;
-  // })
-  // .catch((err) => {
-  // throw err;
-  // });
-  // });
+  test('Send 400 GET: no motorcycle with this id', () => {
+    return superagent.get(`${apiUrl}/THISISABADID`)
+      .then((response) => {
+        throw response;
+      })
+      .catch((err) => {
+        throw err;
+      });
+  });
 });
 
 // describe('PUT request to api/kawasakis/:id?', () => {
