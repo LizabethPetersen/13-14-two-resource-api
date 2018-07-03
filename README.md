@@ -1,5 +1,5 @@
-![CF](https://camo.githubusercontent.com/70edab54bba80edb7493cad3135e9606781cbb6b/687474703a2f2f692e696d6775722e636f6d2f377635415363382e706e67) 13: Two-Resource Resource Mongo and Express API
-===
+# 13: Two-Resource Resource Mongo and Express API
+[![Build Status](https://travis-ci.com/LizabethPetersen/13-14-two-resource-api.svg?branch=master)](https://travis-ci.com/LizabethPetersen/13-14-two-resource-api)
 
 ## Submission Instructions
 * Read this document entirely and estimate how long this assignment will take.
