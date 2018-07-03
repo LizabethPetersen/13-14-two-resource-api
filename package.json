@@ -1,6 +1,6 @@
 {
   "name": "13-14-two-resource-api",
-  "version": "1.0.0",
+  "specs": "1.0.0",
   "description": "![CF](https://camo.githubusercontent.com/70edab54bba80edb7493cad3135e9606781cbb6b/687474703a2f2f692e696d6775722e636f6d2f377635415363382e706e67) 13: Two-Resource Resource Mongo and Express API ===",
   "main": "index.js",
   "scripts": {
@@ -30,18 +30,19 @@
     "dotenv": "^6.0.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jest": "^21.17.0",
-    "eslint-plugin-react": "^7.9.1",
+    "eslint-plugin-react": "^7.10.0",
     "faker": "^4.1.0",
-    "jest": "^23.1.0",
+    "jest": "^23.2.0",
     "nodemon": "^1.17.5",
     "superagent": "^3.8.3",
     "winston": "^3.0.0"
   },
   "dependencies": {
-    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
     "express": "^4.16.3",
+    "http-errors": "^1.6.3",
     "mongoose": "^5.1.7"
   }
 }
