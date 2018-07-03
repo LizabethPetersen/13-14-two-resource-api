@@ -28,8 +28,8 @@
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "dotenv": "^6.0.0",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint": "^5.0.1",
+    "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jest": "^21.17.0",
     "eslint-plugin-react": "^7.10.0",
@@ -44,5 +44,14 @@
     "express": "^4.16.3",
     "http-errors": "^1.6.3",
     "mongoose": "^5.1.7"
-  }
+  },
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LizabethPetersen/13-14-two-resource-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LizabethPetersen/13-14-two-resource-api/issues"
+  },
+  "homepage": "https://github.com/LizabethPetersen/13-14-two-resource-api#readme"
 }
