@@ -2,6 +2,21 @@
 
 import mongoose from 'mongoose';
 
+/*
+SQL
+CREATE DATABASE motorcycleDB;
+
+CREATE TABLE motorcycles (
+  motorcycleID PRIMARY SERIAL KEY,
+  name VARCHAR(100) NOT NULL ,
+  year INT,
+  specsID INT,
+  FOREIGN KEY (specsID) REFERENCES specs(specsID),
+  date_added TIMESTAMP DEFAULT NULL,
+);
+*/
+
+
 const motorcycleSchema = mongoose.Schema({
   name: {
     type: String,

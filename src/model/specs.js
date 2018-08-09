@@ -2,6 +2,19 @@
 
 import mongoose from 'mongoose';
 import Motorcycle from './motorcycle';
+/*
+SQL
+
+CREATE TABLE specs (
+  specsID FOREIGN KEY,  // is this how this would be written in this table, or is specsID also a primary serial key?
+  style VARCHAR(25),
+  cc INT,
+  engine VARCHAR(25),
+  transmission VARCHAR(25),
+);
+
+*/
+
 
 const specsSchema = mongoose.Schema({
   style: {
