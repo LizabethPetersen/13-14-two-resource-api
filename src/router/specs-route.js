@@ -5,6 +5,8 @@ import Specs from '../model/specs';
 
 const specsRoute = new Router();
 
+// This is where I could CREATE TABLE (see specs model for SQL schema) for my specs
+
 specsRoute.post('/api/specs', (request, response, next) => {
   logger.log(logger.INFO, 'S-Route POST to /api/specs - processing a request');
   if (!request.body.style) {
@@ -27,6 +29,8 @@ specsRoute.post('/api/specs', (request, response, next) => {
   return undefined;
 });
 
+// This is where I can return specs for a motorcycle or all data through OUTER JOIN 
+
 specsRoute.get('/api/specs/:id?', (request, response, next) => {
   if (!request.params.id) {
     return next(new HttpErrors(400, 'Did not enter an ID'));
@@ -44,45 +48,9 @@ specsRoute.get('/api/specs/:id?', (request, response, next) => {
   return undefined;
 });
 
-// specsRoute.put('/api/specs/:id?', (request, response, next) => {
-// if (!request.params.id) {
-// logger.log(logger.INFO, 'S-Route PUT /api/specs: Responding with a 400 error code for no id passed in');
-// return response.sendStatus(400);
-// }
-// 
-// const options = {
-// new: true,
-// runValidators: true,
-// };
-// 
-// Specs.init()
-// .then(() => {
-// return Specs.findByIdAndUpdate(request.params.id, request.body, options);
-// })
-// .then((updatedSpecs) => {
-// logger.log(logger.INFO, `S-Route PUT: 200 status code for successfully updated specs: ${JSON.stringify(updatedSpecs)}`);
-// return response.json(updatedSpecs);
-// })
-// .catch(next);
-// return undefined;
-// });
-// 
-// specsRoute.delete('/api/specs/:id?', (request, response, next) => {
-// logger.log(logger.INFO, 'S-Route DELETE /api/specs/:id = Processing a request');
-// if (!request.params.id) {
-// logger.log(logger.INFO, 'S-Route DELETE /api/specs: Responding with 400 error code for no objects found');
-// return response.sendStatus(400);
-// }
-// return Specs.findByIdAndRemove(request.params.id)
-// .then((specs) => {
-// if (!specs) {
-// logger.log(logger.INFO, 'S-Route DELETE: Responding with 404 status code for no specs found');
-// return response.sendStatus(404);
-// }
-// logger.log(logger.INFO, 'S-Route DELETE: Responding with 204 status code for successful delete');
-// return response.sendStatus(204);
-// })
-// .catch(next);
-// });
+// My PUT route could UPDATE specs for a motorcycle
+
+// My DELETE route could DELETE FROM specs, though this would be better served through deleting the motorcycle that the specs are attached to.
+// However, in SQL tables, I would likely need to delete both the specs and the moto they are associated with.
 
 export default specsRoute;
